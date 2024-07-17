@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - todo-mysql-data:/var/lib/mysql
+    networks:
+        - deploy-todo-network
+    environment:
+        MYSQL_ROOT_PASSWORD: secret
+        MYSQL_DATABASE: todos
+  app:
+    image: ehoudon/todo-app:1.4.0
+    ports:
+      - 8080:3000
+    networks:
+        - deploy-todo-network
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: todos
+
+volumes:
+    todo-mysql-data:
+networks:
+  deploy-todo-network:
